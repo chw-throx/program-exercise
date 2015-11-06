@@ -12,7 +12,8 @@ public class SuffixTreeNode
     private boolean isRoot;
     private int indexInArray;
     private SuffixTreeNode suffixLink;
-    private HashMap<Integer, TextFragment> texts;
+    private int begin;
+    private int end;
     private HashMap<Character, Integer> children;
 
     class TextFragment
@@ -32,13 +33,13 @@ public class SuffixTreeNode
     public SuffixTreeNode()
     {
         init();
-        reSet(-1, -1, -1);
+        reSet(-1, -1);
     }
 
-    public SuffixTreeNode(int beginIndex, int endIndex, int textId)
+    public SuffixTreeNode(int beginIndex, int endIndex)
     {
         init();
-        reSet(beginIndex, endIndex, textId);
+        reSet(beginIndex, endIndex);
     }
 
     private void init()
@@ -58,9 +59,10 @@ public class SuffixTreeNode
         this.indexInArray = indexInArray;
     }
 
-    public void reSet(int begin, int end, int textId)
+    public void reSet(int begin, int end)
     {
-        texts.put(textId, new TextFragment(begin,end,textId));
+        this.begin = begin;
+        this.end = end;
     }
 
     public boolean addChild(Character c, int index)
@@ -114,18 +116,23 @@ public class SuffixTreeNode
         return isRoot;
     }
 
-    public int getBeginIndex(int textId)
+    public int getBegin()
     {
-        return beginIndex;
+        return begin;
     }
 
-    public int getEndIndex()
+    public void setBegin(int begin)
     {
-        return endIndex;
+        this.begin = begin;
     }
 
-    public void setEndIndex(int endIndex)
+    public int getEnd()
     {
-        this.endIndex = endIndex;
+        return end;
+    }
+
+    public void setEnd(int end)
+    {
+        this.end = end;
     }
 }

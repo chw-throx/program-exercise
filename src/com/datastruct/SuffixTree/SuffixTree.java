@@ -36,9 +36,9 @@ public class SuffixTree
         return root;
     }
 
-    public SuffixTreeNode insertNewNode(int begin, int end, int textId)
+    public SuffixTreeNode insertNewNode(int begin, int end)
     {
-        tree.add(new SuffixTreeNode(begin, end, textId));
+        tree.add(new SuffixTreeNode(begin, end));
         ++current_index;
         root.setIndexInArray(current_index);
         return tree.get(current_index);

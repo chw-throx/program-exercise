@@ -11,7 +11,7 @@ public class SuffixTreeConstructor
     private int reminder;
     private TripleTuple tuple;
     private SuffixTree tree;
-    private ArrayList<String> stringArrayList;
+    private String text;
     private int currentTextId;
 
 
@@ -48,7 +48,7 @@ public class SuffixTreeConstructor
     private void buildUp(String text)
     {
         int current = currentTextId;
-        stringArrayList.add(text);
+        this.text = text;
         char[] charArray = text.toCharArray();
         for(position = 0; position < text.length(); ++position)
         {
@@ -63,7 +63,7 @@ public class SuffixTreeConstructor
 
                 if (!tuple.activeNode.containsKeys(c))
                 {
-                    SuffixTreeNode newNode = tree.insertNewNode(position, -1, currentTextId);
+                    SuffixTreeNode newNode = tree.insertNewNode(position, -1);
                     tuple.activeNode.addChild(c, newNode.getIndexInArray());
                     tuple.addSuffixLink(tuple.activeNode);
                 }
@@ -89,7 +89,7 @@ public class SuffixTreeConstructor
                         else
                         {
                             splitNode(nextNode);
-                            nextNode.addChild(c, tree.insertNewNode(position, -1, currentTextId).getIndexInArray());
+                            nextNode.addChild(c, tree.insertNewNode(position, -1).getIndexInArray());
                             tuple.addSuffixLink(nextNode);
                         }
                     }
@@ -120,23 +120,23 @@ public class SuffixTreeConstructor
 
     private void splitNode(SuffixTreeNode node)
     {
-        int old_endIndex = node.getEndIndex();
-        int new_endIndex = node.getBeginIndex() + tuple.activeLength;
-        node.setEndIndex(new_endIndex);
-        node.addChild(stringArrayList.get(node.getTextId()).charAt(new_endIndex), tree.insertNewNode(new_endIndex, old_endIndex, currentTextId).getIndexInArray());
+        int old_endIndex = node.getEnd();
+        int new_endIndex = node.getBegin() + tuple.activeLength;
+        node.setEnd(new_endIndex);
+        node.addChild(text.charAt(new_endIndex), tree.insertNewNode(new_endIndex, old_endIndex).getIndexInArray());
     }
 
     private boolean isCurrentPositionInEdge(SuffixTreeNode node)
     {
-        if (position >= node.getBeginIndex())
+        if (position >= node.getBegin())
         {
-            if (node.getEndIndex() == -1)
+            if (node.getEnd() == -1)
             {
                 return true;
             }
             else
             {
-                if (position < node.getEndIndex())
+                if (position < node.getEnd())
                 {
                     return true;
                 }
@@ -148,13 +148,13 @@ public class SuffixTreeConstructor
 
     private int getEdgeLength(SuffixTreeNode node)
     {
-        return getCurrentEndIndex(node) - node.getBeginIndex();
+        return getCurrentEndIndex(node) - node.getBegin();
     }
 
     private int getCurrentEndIndex(SuffixTreeNode node)
     {
         int end = position + 1;
-        int node_end = node.getEndIndex();
+        int node_end = node.getEnd();
         if (node_end != -1)
         {
             if (end > node_end)
@@ -168,6 +168,6 @@ public class SuffixTreeConstructor
 
     private Character getCurrentLeftPeer(SuffixTreeNode node)
     {
-       return stringArrayList.get(node.getTextId()).charAt(getCurrentEndIndex(node));
+       return text.charAt(getCurrentEndIndex(node));
     }
 }
