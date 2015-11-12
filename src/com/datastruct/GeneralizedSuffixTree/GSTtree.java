@@ -5,4 +5,12 @@ package com.datastruct.GeneralizedSuffixTree;
  */
 public class GSTtree
 {
+    private GSTNode root;
+
+    public GSTtree()
+    {
+        this.root = new GSTNode();
+    }
+
+
 }
